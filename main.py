@@ -32,5 +32,8 @@ def run():
 
 
 if __name__ == '__main__':
-    while True:
-        run()
+    try:
+        while True:
+            run()
+    except KeyboardInterrupt:
+       GPIO.cleanup()
