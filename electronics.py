@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
-from constants import LEDS
+from constants import LEDS, BOTTOM_RIGHT
 
 def get_data_from_wage_module():
     pass
@@ -12,7 +12,10 @@ def indicate_error():
 
 
 def indicate_cell(line, column):
-    pass
+    pause_time = 2
+    GPIO.output(LEDS[0], GPIO.HIGH)
+    sleep(pause_time)
+    GPIO.output(LEDS[0], GPIO.HIGH)
 
 
 def indicate_activation():

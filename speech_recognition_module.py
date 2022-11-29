@@ -9,17 +9,16 @@ def input_voice_command():
         audio = r.listen(source)
 
     try:
-        command = r.recognize_google(audio, language="ru-RU")
-        print(command)
-        return command
+        text = r.recognize_google(audio, language="ru-RU")
+        print(text)
+        return text
     except sr.UnknownValueError:
-        print("Робот не расслышал фразу")
+        print("Try again")
         return 1
     except sr.RequestError as e:
-        print("Ошибка сервиса; {0}".format(e))
+        print("Service error; {0}".format(e))
         return 1
 
 
 if __name__ == '__main__':
-    while True:
-        input_voice_command()
+    command = input_voice_command()

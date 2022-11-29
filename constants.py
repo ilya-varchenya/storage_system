@@ -6,6 +6,8 @@ ADD_ITEM = 'добавить'
 DELETE_ITEM = 'удалить'
 UPDATE_ITEM = 'изменить'
 SEARCH_ITEM = 'найти'
+ERROR = 'error'
+AMOUNT = 'количество'
 
 # storage cells
 UPPER_LEFT = [0, 0]
@@ -28,10 +30,10 @@ LED14 = 21
 LED15 = 10
 LED16 = 9
 
-LEDS = [LED1,  LED2,  LED3,  LED4,
-        LED5,  LED6,  LED7,  LED8,
-        LED9,  LED10, LED11, LED12,
-        LED13, LED14, LED15, LED16]
+LEDS = [[LED1,  LED2,  LED3,  LED4],
+        [LED5,  LED6,  LED7,  LED8],
+        [LED9,  LED10, LED11, LED12],
+        [LED13, LED14, LED15, LED16]]
 
 # leds = [25, 24, 26, 13,
 #         7,  8,  6,  19,
