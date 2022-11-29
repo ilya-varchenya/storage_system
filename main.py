@@ -17,7 +17,7 @@ def run():
         if command == 1:
             indicate_error()
         else:
-            action, item, number = parse_command()
+            action, item, number = parse_command(command)
             if action == SEARCH_ITEM:
                 line, column = find_item(item)
                 indicate_cell(line, column)
@@ -29,8 +29,6 @@ def run():
                 # indicate_cell(cell)
             else:
                 indicate_error()
-
-
 
 
 if __name__ == '__main__':
