@@ -1,61 +1,53 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
-from constants import LEDS, BOTTOM_RIGHT
+from constants import LEDS
+
 
 def get_data_from_wage_module():
     pass
 
 
 def indicate_error():
-    pass
+    pause_time = 0.2
+    count = 3
+    leds = LEDS.copy()
+    for line in range(len(LEDS)):
+        for column in range(len(LEDS)):
+            leds[column][line] = leds[line][column]
+
+    while count >= 0:
+        for lines in leds:
+            for element in lines:
+                GPIO.output(element, GPIO.HIGH)
+        sleep(pause_time)
+        for lines in leds:
+            for element in lines:
+                GPIO.output(element, GPIO.LOW)
+        count -= 1
 
 
 def indicate_cell(line, column):
     pause_time = 2
-    GPIO.output(LEDS[0], GPIO.HIGH)
+    GPIO.output(LEDS[line - 1][column - 1], GPIO.HIGH)
     sleep(pause_time)
-    GPIO.output(LEDS[0], GPIO.HIGH)
+    GPIO.output(LEDS[line - 1][column - 1], GPIO.LOW)
 
 
 def indicate_activation():
     pause_time = 0.5
-    GPIO.output(LEDS[0], GPIO.HIGH)
-    GPIO.output(LEDS[1], GPIO.HIGH)
-    GPIO.output(LEDS[2], GPIO.HIGH)
-    GPIO.output(LEDS[3], GPIO.HIGH)
-    GPIO.output(LEDS[12], GPIO.HIGH)
-    GPIO.output(LEDS[13], GPIO.HIGH)
-    GPIO.output(LEDS[14], GPIO.HIGH)
-    GPIO.output(LEDS[15], GPIO.HIGH)
-    sleep(pause_time)
-    GPIO.output(LEDS[0], GPIO.LOW)
-    GPIO.output(LEDS[1], GPIO.LOW)
-    GPIO.output(LEDS[2], GPIO.LOW)
-    GPIO.output(LEDS[3], GPIO.LOW)
-    GPIO.output(LEDS[12], GPIO.LOW)
-    GPIO.output(LEDS[13], GPIO.LOW)
-    GPIO.output(LEDS[14], GPIO.LOW)
-    GPIO.output(LEDS[15], GPIO.LOW)
-    
-    GPIO.output(LEDS[4], GPIO.HIGH)
-    GPIO.output(LEDS[5], GPIO.HIGH)
-    GPIO.output(LEDS[6], GPIO.HIGH)
-    GPIO.output(LEDS[7], GPIO.HIGH)
-    GPIO.output(LEDS[8], GPIO.HIGH)
-    GPIO.output(LEDS[9], GPIO.HIGH)
-    GPIO.output(LEDS[10], GPIO.HIGH)
-    GPIO.output(LEDS[11], GPIO.HIGH)
-    sleep(pause_time)
-    GPIO.output(LEDS[4], GPIO.LOW)
-    GPIO.output(LEDS[5], GPIO.LOW)
-    GPIO.output(LEDS[6], GPIO.LOW)
-    GPIO.output(LEDS[7], GPIO.LOW)
-    GPIO.output(LEDS[8], GPIO.LOW)
-    GPIO.output(LEDS[9], GPIO.LOW)
-    GPIO.output(LEDS[10], GPIO.LOW)
-    GPIO.output(LEDS[11], GPIO.LOW)
-    
+    count = 3
+    while count >= 0:
+        for lines in LEDS:
+            for element in lines:
+                GPIO.output(element, GPIO.HIGH)
+        sleep(pause_time)
+        for lines in LEDS:
+            for element in lines:
+                GPIO.output(element, GPIO.LOW)
+        count -= 1
+
+
 if __name__ == '__main__':
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
