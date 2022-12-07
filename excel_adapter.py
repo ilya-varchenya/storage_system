@@ -16,7 +16,7 @@ def read_cell(line, column):
     return data
 
 
-def write_info(cell, data):
+def write_info(line, column, data):
     book = xlrd.open_workbook(file_name, formatting_info=True)
     workbook = copy(book)
     sheet = workbook.get_sheet(0)
@@ -26,7 +26,7 @@ def write_info(cell, data):
         data_string += "{0}: {1}\n".format(key, value)
     data_string = data_string[0:-1]
 
-    sheet.write(cell[0], cell[1], data_string)
+    sheet.write(line, column, data_string)
     workbook.save(file_name)
 
 
@@ -42,30 +42,30 @@ def find_item(item):
                     print("Item is in cell ({}, {})".format(line, column))
                     return line, column
     else:
-        return [None, None]
+        return None, None
 
 
 def add_or_update_item(item, number):
-    cell = find_free_cell_or_add_to_similar_item(item)
-    data = read_cell(cell[0], cell[1])
+    line, column = find_free_cell_or_add_to_similar_item(item)
+    data = read_cell(line, column)
     if data == '':
         data.setdefault(item, number)
     else:
         for key, value in data.items():
             if key == item:
                 data[key] = value + number
-    write_info(cell, data)
+    write_info(line, column, data)
 
 
 def remove_item(item):
-    cell = find_item(item)
-    if cell == [None, None]:
+    line, column = find_item(item)
+    if line is None and column is None:
         indicate_error()
     else:
-        data = read_cell(cell[0], cell[1])
+        data = read_cell(line, column)
         del data[item]
-        write_info(cell, data)
-        return cell
+        write_info(line, column, data)
+        return line, column
 
 
 def find_free_cell_or_add_to_similar_item(item):
@@ -75,14 +75,14 @@ def find_free_cell_or_add_to_similar_item(item):
         return cell_with_item
     else:
         # find empty cell
-        empty_cell = find_item('')
-        if empty_cell != [None, None]:
+        empty_cell_line, empty_cell_column = find_item('')
+        if empty_cell_line is not None and empty_cell_column is not None:
             # get random cell
             line = randint(UPPER_LEFT[0], BOTTOM_RIGHT[0])
             column = randint(UPPER_LEFT[1], BOTTOM_RIGHT[1])
-            return [line, column]
+            return line, column
         else:
-            return empty_cell
+            return empty_cell_line, empty_cell_column
 
 
 if __name__ == '__main__':

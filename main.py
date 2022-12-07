@@ -28,22 +28,22 @@ def run():
             line, column = find_item(item)
             indicate_cell(line, column)
         elif action == ADD_ITEM or action == UPDATE_ITEM:
-            cell = find_free_cell_or_add_to_similar_item(item)
-            # indicate_cell(cell)
+            line, column = find_free_cell_or_add_to_similar_item(item)
+            indicate_cell(line, column)
         elif action == DELETE_ITEM:
-            cell = remove_item(item)
-            # indicate_cell(cell)
+            line, column = remove_item(item)
+            indicate_cell(line, column)
         else:
             action, item, number = parse_command(command)
             if action == SEARCH_ITEM:
                 line, column = find_item(item)
                 indicate_cell(line, column)
             elif action == ADD_ITEM or action == UPDATE_ITEM:
-                cell = find_free_cell_or_add_to_similar_item(item)
-                indicate_cell(cell[0], cell[1])
+                line, column = find_free_cell_or_add_to_similar_item(item)
+                indicate_cell(line, column)
             elif action == DELETE_ITEM:
-                cell = remove_item(item)
-                indicate_cell(cell[0], cell[1])
+                line, column = remove_item(item)
+                indicate_cell(line, column)
             else:
                 indicate_error()
 
