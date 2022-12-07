@@ -1,7 +1,7 @@
 import sys
 
 from hx711 import HX711
-from electronics import indicate_activation, indicate_error, indicate_cell
+from electronics import indicate_activation, indicate_error, indicate_cell, setup_gpio
 from speech_recognition_module import input_voice_command
 from excel_adapter import find_item, remove_item, find_free_cell_or_add_to_similar_item
 from text_parser import parse_command
@@ -49,6 +49,7 @@ def run():
 
 
 if __name__ == '__main__':
+    setup_gpio()
     try:
         while True:
             current_weight = hx.get_weight()

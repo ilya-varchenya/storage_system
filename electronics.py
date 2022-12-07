@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
-from constants import LEDS
+from constants import LEDS, HX711_DT, HX711_SCK
 
 
 def indicate_error():
@@ -42,6 +42,17 @@ def indicate_activation():
             GPIO.output(element, GPIO.LOW)
     
     blink(1)
+
+
+def setup_gpio():
+    # prepare LEDs
+    for lines in LEDS:
+        for element in lines:
+            GPIO.setup(element, GPIO.OUT)
+
+    # prepare HX711
+    GPIO.setup(HX711_DT, GPIO.OUT)
+    GPIO.setup(HX711_SCK, GPIO.OUT)
 
 
 if __name__ == '__main__':
