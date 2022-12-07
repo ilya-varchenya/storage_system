@@ -4,9 +4,19 @@ from time import sleep
 from constants import LEDS
 
 
-def get_data_from_wage_module():
-    pass
 
+def indicate_error():
+    blink(3, 0.25)
+
+
+def indicate_cell(line, column, pause_time = 5, n = 1):
+    while n > 0:
+        n -= 1
+        GPIO.output(LEDS[line - 1][column - 1], GPIO.HIGH)
+        sleep(pause_time)
+        GPIO.output(LEDS[line - 1][column - 1], GPIO.LOW)
+        sleep(pause_time)
+    
 
 def blink(n=1, pause_time=0.2):
     while n > 0:

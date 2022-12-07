@@ -1,21 +1,38 @@
-from electronics import get_data_from_wage_module, indicate_activation, indicate_error, indicate_cell
+import sys
+
+from hx711 import HX711
+from electronics import indicate_activation, indicate_error, indicate_cell
 from speech_recognition_module import input_voice_command
 from excel_adapter import find_item, remove_item, find_free_cell_or_add_to_similar_item
 from text_parser import parse_command
 
-from constants import SYSTEM_WAGE, ADD_ITEM, DELETE_ITEM, SEARCH_ITEM, UPDATE_ITEM
+from constants import ADD_ITEM, DELETE_ITEM, SEARCH_ITEM, UPDATE_ITEM, \
+    HX711_DT, HX711_SCK, HX711_REFERENCE_UNIT, HX711_FAULT
 
-wage_of_parts = 0
+hx = HX711(HX711_DT, HX711_SCK)
+hx.set_reading_format("MSB", "MSB")
+hx.set_reference_unit(HX711_REFERENCE_UNIT)
+hx.reset()
+hx.tare()
+weight = hx.get_weight()
+current_weight = 0
 
 
 def run():
-    current_wage = get_data_from_wage_module()
-    if SYSTEM_WAGE + wage_of_parts != current_wage:
-        indicate_activation()
-
-        command = input_voice_command()
-        if command == 1:
-            indicate_error()
+    command = input_voice_command()
+    if command == 1:
+        indicate_error()
+    else:
+        action, item, number = parse_command(command)
+        if action == SEARCH_ITEM:
+            line, column = find_item(item)
+            indicate_cell(line, column)
+        elif action == ADD_ITEM or action == UPDATE_ITEM:
+            cell = find_free_cell_or_add_to_similar_item(item)
+            # indicate_cell(cell)
+        elif action == DELETE_ITEM:
+            cell = remove_item(item)
+            # indicate_cell(cell)
         else:
             action, item, number = parse_command(command)
             if action == SEARCH_ITEM:
@@ -34,6 +51,14 @@ def run():
 if __name__ == '__main__':
     try:
         while True:
-            run()
+            current_weight = hx.get_weight()
+            if (current_weight - weight) < HX711_FAULT:
+                indicate_activation()
+                run()
+
+            hx.power_down()
+            hx.power_up()
+            # time.sleep(0.1)
     except KeyboardInterrupt:
-       GPIO.cleanup()
+        GPIO.cleanup()
+        sys.exit()
