@@ -1,5 +1,8 @@
-# TODO: update to real value
-SYSTEM_WAGE = 1000
+# weight module settings
+HX711_DT = 17
+HX711_SCK = 27
+HX711_REFERENCE_UNIT = 98
+HX711_FAULT = 20  # in units
 
 # actions
 ADD_ITEM = 'добавить'
