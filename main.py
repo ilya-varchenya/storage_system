@@ -23,10 +23,10 @@ def run():
                 indicate_cell(line, column)
             elif action == ADD_ITEM or action == UPDATE_ITEM:
                 cell = find_free_cell_or_add_to_similar_item(item)
-                # indicate_cell(cell)
+                indicate_cell(cell[0], cell[1])
             elif action == DELETE_ITEM:
                 cell = remove_item(item)
-                # indicate_cell(cell)
+                indicate_cell(cell[0], cell[1])
             else:
                 indicate_error()
 
