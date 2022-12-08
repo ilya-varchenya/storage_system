@@ -15,7 +15,7 @@ def indicate_cell(line, column, pause_time=5, n=1):
         sleep(pause_time)
         GPIO.output(LEDS[line - 1][column - 1], GPIO.LOW)
         sleep(pause_time)
-    
+
 
 def blink(n=1, pause_time=0.2):
     while n > 0:
@@ -36,15 +36,17 @@ def indicate_activation():
         for element in lines:
             GPIO.output(element, GPIO.HIGH)
             sleep(pause_time)
-            
+
     for lines in LEDS:
         for element in lines:
             GPIO.output(element, GPIO.LOW)
-    
+
     blink(1)
 
 
 def setup_gpio():
+    GPIO.setwarnings(False)
+
     # prepare LEDs
     for lines in LEDS:
         for element in lines:
