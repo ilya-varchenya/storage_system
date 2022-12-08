@@ -3,7 +3,7 @@ import xlrd
 from xlutils.copy import copy
 from constants import UPPER_LEFT, BOTTOM_RIGHT
 from text_parser import parse_cell_data
-from electronics import indicate_error
+# from electronics import indicate_error
 
 file_name = "storage.xls"
 
@@ -60,7 +60,8 @@ def add_or_update_item(item, number):
 def remove_item(item):
     line, column = find_item(item)
     if line is None and column is None:
-        indicate_error()
+        # indicate_error()
+        pass
     else:
         data = read_cell(line, column)
         del data[item]
@@ -70,13 +71,13 @@ def remove_item(item):
 
 def find_free_cell_or_add_to_similar_item(item):
     # find cell with item
-    cell_with_item = find_item(item)
-    if cell_with_item != [None, None]:
-        return cell_with_item
+    cell_with_item_line, cell_with_item_column = find_item(item)
+    if cell_with_item_line is not None and cell_with_item_column is not None:
+        return cell_with_item_line, cell_with_item_column
     else:
         # find empty cell
         empty_cell_line, empty_cell_column = find_item('')
-        if empty_cell_line is not None and empty_cell_column is not None:
+        if empty_cell_line is None and empty_cell_column is None:
             # get random cell
             line = randint(UPPER_LEFT[0], BOTTOM_RIGHT[0])
             column = randint(UPPER_LEFT[1], BOTTOM_RIGHT[1])
@@ -87,9 +88,9 @@ def find_free_cell_or_add_to_similar_item(item):
 
 if __name__ == '__main__':
     # read_cell(0, 0)
-    # write_info([0, 1], {'mew': 5})
+    write_info(0, 1, {'mew': 5})
     # print(find_item('mew'))
     # print(find_item('bark'))
     # add_or_update_item("mew", 10)
     # read_cell(0, 1)
-    remove_item("mew")
+    # remove_item("mew")

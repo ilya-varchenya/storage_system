@@ -32,4 +32,5 @@ def parse_cell_data(data_string):
 
 
 if __name__ == '__main__':
-    print(parse_cell_data("конденсатор: 1\nрезистор: 2\nлампочка: 3"))
+    # print(parse_cell_data("конденсатор: 1\nрезистор: 2\nлампочка: 3"))
+    print(parse_command("добавить резистор количество 1"))
