@@ -46,11 +46,13 @@ def indicate_activation():
 
 def setup_gpio():
     GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
 
     # prepare LEDs
     for lines in LEDS:
         for element in lines:
             GPIO.setup(element, GPIO.OUT)
+            GPIO.output(element, GPIO.LOW)
 
     # prepare HX711
     GPIO.setup(HX711_DT, GPIO.OUT)
@@ -61,10 +63,10 @@ if __name__ == '__main__':
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
     GPIO.cleanup()
-    
+
     for i in LEDS:
         GPIO.setup(i, GPIO.OUT, initial=GPIO.LOW)
-    
+
     # indicate_activation()
     # indicate_error()
     indicate_cell(1, 1, 1, 5)

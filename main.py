@@ -1,4 +1,6 @@
 import sys
+from time import sleep
+import RPi.GPIO as GPIO
 
 from hx711 import HX711
 from electronics import indicate_activation, indicate_error, indicate_cell, setup_gpio
@@ -8,14 +10,6 @@ from text_parser import parse_command
 
 from constants import ADD_ITEM, DELETE_ITEM, SEARCH_ITEM, UPDATE_ITEM, \
     HX711_DT, HX711_SCK, HX711_REFERENCE_UNIT, HX711_FAULT
-
-hx = HX711(HX711_DT, HX711_SCK)
-hx.set_reading_format("MSB", "MSB")
-hx.set_reference_unit(HX711_REFERENCE_UNIT)
-hx.reset()
-hx.tare()
-weight = hx.get_weight()
-current_weight = 0
 
 
 def run():
@@ -50,16 +44,25 @@ def run():
 
 if __name__ == '__main__':
     setup_gpio()
+    hx = HX711(HX711_DT, HX711_SCK)
+    hx.set_reading_format("MSB", "MSB")
+    hx.set_reference_unit(HX711_REFERENCE_UNIT)
+    hx.reset()
+    hx.tare()
+    weight = hx.get_weight()
+    current_weight = 0
+
     try:
         while True:
             current_weight = hx.get_weight()
-            if (current_weight - weight) < HX711_FAULT:
+            print("abs({} - {}) > {}".format(current_weight, weight, HX711_FAULT))
+            if abs(current_weight - weight) > HX711_FAULT:
                 indicate_activation()
                 run()
 
             hx.power_down()
             hx.power_up()
-            # time.sleep(0.1)
+            sleep(0.1)
     except KeyboardInterrupt:
         GPIO.cleanup()
         sys.exit()
