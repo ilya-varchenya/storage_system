@@ -10,18 +10,18 @@ from constants import HX711_DT, HX711_SCK, HX711_REFERENCE_UNIT, HX711_FAULT
 count = 0
 
 
-def run(count):
-    sleep(3)
-    if count == 0:
+def run(c):
+    sleep(2.5)
+    if c == 0:
         indicate_cell(1, 0)
-        count += 1
-    elif count == 1:
+        c += 1
+    elif c == 1:
         indicate_cell(1, 0)
-        count += 1
-    elif count == 2:
+        c += 1
+    elif c == 2:
         indicate_error()
-        count = 0
-    return count
+        c = 0
+    return c
 
 
 if __name__ == '__main__':
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             print("abs({} - {}) > {}".format(current_weight, weight, HX711_FAULT))
             if abs(current_weight - weight) > HX711_FAULT:
                 indicate_activation()
-                run(count)
+                count = run(count)
 
             hx.power_down()
             hx.power_up()
